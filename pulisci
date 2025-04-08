@@ -1,0 +1,1 @@
+rm nml.atmo.log NAMELIST_ICON_output_atm output_schedule.txt output_schedule.ps finish.status  slurm* out/* 
