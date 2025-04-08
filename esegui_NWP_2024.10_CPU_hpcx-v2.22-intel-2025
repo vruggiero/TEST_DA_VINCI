@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Set modules to load for current job
+
+#export GRIB_DEFINITION_PATH=/home/human/fondamentali/misc/ec-2.14.1/definitions.edzw:/home/human/fondamentali/misc/ec-2.14.1/definitions
+#export GRIB_SAMPLES_PATH=/home/human/fondamentali/misc/ec-2.14.1/samples
+export GRIB_DEFINITION_PATH=/home/vittorio/SORGENTI_ICON/ec-2.36.0/definitions.edzw://home/vittorio/SORGENTI_ICON/ec-2.36.0/definitions
+export GRIB_SAMPLES_PATH=/home/vittorio/SORGENTI_ICON/ec-2.36.0/samples
+
+
+export OMP_NUM_THREADS=2
+export KMP_STACKSIZE=10G
+
+export OMP_DISPLAY_ENV="true"
+export OMP_DISPLAY_AFFINITY="true"
+export OMP_SCHEDULE="dynamic,4" 
+##################################################export OMP_PLACES="cores"
+#export OMP_PROC_BIND="compact"
+
+export DARSHAN_LOGPATH=.
+
+export FI_PROVIDER=verbs
+
+source /home/vittorio/MODULI/hpcx-v2.22/intel/2025/setta_modulo
+
+#source /home/vittorio/intel/oneapi/vtune/latest/env/vars.sh
+export MPS_STAT_LEVEL=5
+###           PER HPCTOOLKITS     #####
+#source /home/vittorio/MODULE/RH8/hpctoolkit_reloaded/setta_ambiente
+#######################################
+
+
+cd /home/vittorio/CORSA/ICON/TEST_DA_VINCI 
+
+#rm pippo
+#rm newfile.pippo
+#echo $SLURM_JOB_NODELIST
+#scontrol show hostnames > pippo
+#sed -i "s/$/ slots=6/g" pippo
+#sed '$,$s/slots=6/slots=2/g' pippo > newfile.pippo
+
+#export OMP_NUM_THREADS=1
+
+#SBATCH --gres=gpu:4 
+#SBATCH --propagate=STACK
+ulimit -l unlimited
+
+#export LD_PRELOAD=/home/vittorio/CREAZIONE_MODULI/mpitrace/src/libmpitrace.so
+
+##############################      CON DLB   ########################
+#DLB_HOME=/home/vittorio/MODULI/dlb/openmpi-4.1.4_intel_with_papi
+#export DLB_ARGS+=" --talp --talp-external-profiler --talp-summary=pop-metrics:node  --talp-papi=true"
+#mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx/bin/icon 
+######################################################
+
+
+
+#mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 144 -N 6  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh  /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel/bin/icon
+#mpirun --map-by node:PE=2 --bind-to core   -x UCX_NET_DEVICES=mlx4_0:1 -n 288 -N 12  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh  /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel_ottimizzato/bin/icon
+#mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 576 -N 24  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh  /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel/bin/icon
+########àmpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh  /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel_ottimizzato/bin/icon
+#mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 576 -N 24  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH $DLB_HOME/share/doc/dlb/scripts/talp.sh /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx/bin/icon 
+#######mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx/bin/icon 
+#mpirun   -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH aps /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx/bin/icon 
+##########mpirun -x UCX_NET_DEVICES=mlx4_0:1  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH /home/vittorio/SORGENTI_ICON/icon-nwp_2024.10-dwd-2.1_openmp/config/hal_openmpi-4.1.4_ifort/bin/icon 
+mpirun -x UCX_NET_DEVICES=mlx4_0:1  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH /home/vittorio/SORGENTI_ICON/icon-nwp_2024.10-dwd-2.1_openmp/config/hal_hpcx-v2.22-intel-2025/bin/icon
+###########mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx_senza_rget/bin/icon 
+#mpirun -x MPS_STAT_LEVEL=5 -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 10  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH vtune -collect hotspots -r my_result_dir /home/vittorio/MY_ICON/icon-icon-2.6.6/config/VITTORIO/openmpi-4.1.4_intel_new_ucx/bin/icon 
+######################################################
+
+
+#mpirun -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 12  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH   /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel/bin/icon
+#LD_PRELOAD=/home/vittorio/MODULE/RH8/darshan/3.4.4/gcc-openmpi/lib/libdarshan.so mpirun -x DARSHAN_LOGPATH  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 12  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH   /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel/bin/icon
+#mpirun  -x UCX_NET_DEVICES=mlx4_0:1 -n 240 -N 12  -x GRIB_DEFINITION_PATH -x GRIB_SAMPLES_PATH /home/vittorio/CREAZIONE_MODULI/strace-analyzer/strace-wrapper.sh  /home/share/src/ICON/icon-icon-2.6.6/config/hal_openmpi-intel/bin/icon
