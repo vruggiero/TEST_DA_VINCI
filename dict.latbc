@@ -1,0 +1,20 @@
+# internal name     GRIB2 shortName
+geop_ml             GEOP_ML
+geosp               GEOSP
+graupel_gsp         GRAU_GSP
+pres                P
+pres_sfc            LNPS
+qc                  QC
+qi                  QI
+qr                  QR
+qs                  QS
+qv                  QV
+rho                 DEN
+temp                T
+theta_v             THETA_V
+u                   U
+v                   V
+vn                  VN
+w                   W
+z_ifc               HHL
+GEOSP               GEOSP  
